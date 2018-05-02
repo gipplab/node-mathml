@@ -1,4 +1,4 @@
-# VMEdit: A visual Wikidata aware content MathML editor
+npm# VMEdit: A visual Wikidata aware content MathML editor
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/ag-gipp/vmedit.svg)](https://greenkeeper.io/)
 

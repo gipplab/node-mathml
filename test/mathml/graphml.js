@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
-const file = path.resolve('data/09-goat.mml.xml');
+const file = path.join(__dirname,'..','data','09-goat.mml.xml');
 const xmlString = fs.readFileSync(file, 'utf8');
 
 describe('graphml rendering', () => {

@@ -5,9 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
-const file = path.resolve('data/09-goat.mml.xml');
+const file = path.join(__dirname,'..','data','09-goat.mml.xml');
 const xmlString = fs.readFileSync(file, 'utf8');
-const pFile = path.resolve('data/10-pmml-annotation.mml.xml');
+const pFile = path.join(__dirname,'..','data','10-pmml-annotation.mml.xml');
 const xmlPString = fs.readFileSync(pFile, 'utf8');
 
 describe('MathML reading', () => {
