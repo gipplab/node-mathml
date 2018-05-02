@@ -15,7 +15,7 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint ."
   },
-  "main": "./lib",
+  "main": "app/MathML/MathMLRenderer.js",
   "dependencies": {
     "xpath": "0.0.27",
     "xtraverse": "^0.1.0"
