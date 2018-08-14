@@ -16,6 +16,9 @@ base.prototype.xref = function() {
   return this.attr('xref');
 };
 
+base.prototype.getElementById = function(id) {
+  return base.wrap(this[0].ownerDocument.getElementById(id));
+};
 
 base.prototype.select1 = function(path) {
   return base.wrap(
@@ -96,6 +99,7 @@ Object.defineProperty(base.prototype,'id',{
     return this.attr('id',x);
   } }
 );
+
 
 module.exports = base.wrap;
 module.exports.base = base;

@@ -41,8 +41,13 @@ describe('MathML reading', () => {
 
   it('should fail for empty input', () => assert.throws(() => MathML().contentRoot()));
   it('should fail for math elements without presentation', () => assert.throws(() => MathML('<math/>').contentRoot()));
-  it('refNode should be empty if xref not specified', () => assert.equal(MathML('<math/>').refNode().length,0));
+  it('refNode should be empty if xref not specified', () => assert.equal(MathML('<math/>').refNode().length, 0));
+  it('should find elements by ID', () => {
+    const mathml = MathML(xmlPString);
+    const actual = mathml.getElementById('w10');
+    assert.equal(actual[0].getAttribute("id"), 'w10');
 
+  });
 
 });
 
