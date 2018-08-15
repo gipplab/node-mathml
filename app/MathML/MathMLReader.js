@@ -113,5 +113,11 @@ base.prototype.appendChild = function(newChild) {
   return this;
 };
 
+base.prototype.insertBefore = function(newChild) {
+  const n = this[0];
+  n.parentNode.insertBefore(n, newChild[0]);
+  return this;
+};
+
 module.exports = base.wrap;
 module.exports.base = base;

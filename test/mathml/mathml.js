@@ -99,6 +99,14 @@ describe('MathML editing', () => {
     const e48 = mathml.getElementById('e48');
     e48.appendChild(e42);
     e42 = mathml.getElementById('e42');
-    assert.equal(e42.parent().id,'e48')
+    assert.equal(e42.parent().id, 'e48');
+  });
+  it('reorder nodes', () => {
+    const mathml = MathML(xmlString);
+    let e52 = mathml.getElementById('e52');
+    const e53 = mathml.getElementById('e53');
+    e53.insertBefore(e52);
+    e52 = mathml.getElementById('e52');
+    assert.equal(e52.previous().id, 'e53');
   });
 });
