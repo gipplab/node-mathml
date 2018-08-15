@@ -1,6 +1,6 @@
 {
   "name": "mathml",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MathML allows to load modify and render MathML input. It is based on the XML processing node module xtraverse.",
   "repository": {
     "url": "git+ssh://git@github.com/ag-gipp/node-mathml.git",
