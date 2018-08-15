@@ -107,5 +107,11 @@ base.prototype.delete = function() {
   return this;
 };
 
+base.prototype.appendChild = function(newChild) {
+  const n = this[0];
+  n.appendChild(newChild[0]);
+  return this;
+};
+
 module.exports = base.wrap;
 module.exports.base = base;
