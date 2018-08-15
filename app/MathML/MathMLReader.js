@@ -100,6 +100,12 @@ Object.defineProperty(base.prototype,'id',{
   } }
 );
 
+base.prototype.delete = function() {
+  if (!this.length) { return base.wrap([]); }
+  const n = this[0];
+  n.parentNode.removeChild(n);
+  return this;
+};
 
 module.exports = base.wrap;
 module.exports.base = base;

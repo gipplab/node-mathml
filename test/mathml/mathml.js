@@ -5,9 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
-const file = path.join(__dirname,'..','data','09-goat.mml.xml');
+const file = path.join(__dirname, '..', 'data', '09-goat.mml.xml');
 const xmlString = fs.readFileSync(file, 'utf8');
-const pFile = path.join(__dirname,'..','data','10-pmml-annotation.mml.xml');
+const pFile = path.join(__dirname, '..', 'data', '10-pmml-annotation.mml.xml');
 const xmlPString = fs.readFileSync(pFile, 'utf8');
 
 describe('MathML reading', () => {
@@ -75,5 +75,22 @@ describe('MathML positions', () => {
     assert.equal(first.start.ch, 1);
     assert.equal(first.end.line, 1);
     assert.equal(first.end.ch, 1);
+  });
+});
+
+describe('MathML editing', () => {
+  it('delete a node', () => {
+    const mathml = MathML(xmlString);
+    let e42 = mathml.getElementById('e42');
+    e42.delete();
+    e42 = mathml.getElementById('e42');
+    assert.equal(e42.length, 0);
+  });
+  it('delete its child nodes', () => {
+    const mathml = MathML(xmlString);
+    const e42 = mathml.getElementById('e42');
+    e42.delete();
+    const e44 = mathml.getElementById('e44');
+    assert.equal(e44.length, 0);
   });
 });
