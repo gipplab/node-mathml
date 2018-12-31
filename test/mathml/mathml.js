@@ -85,6 +85,8 @@ describe('MathML editing', () => {
     e42.delete();
     e42 = mathml.getElementById('e42');
     assert.equal(e42.length, 0);
+    const empty = e42.delete();
+    assert.equal(empty.length,0);
   });
   it('delete its child nodes', () => {
     const mathml = MathML(xmlString);
@@ -109,4 +111,12 @@ describe('MathML editing', () => {
     e52 = mathml.getElementById('e52');
     assert.equal(e52.previous().id, 'e53');
   });
+  it('change an id', () =>{
+    const mathml = MathML(xmlString);
+    const e42 = mathml.getElementById('e42');
+    e42.id = "e42New";
+    const e42New = mathml.getElementById('e42New');
+    assert.equal(e42New.id, "e42New");
+  });
 });
+

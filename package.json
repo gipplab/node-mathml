@@ -11,7 +11,7 @@
   },
   "scripts": {
     "coverage": "istanbul cover _mocha -- -R spec",
-    "test": "PREQ_CONNECT_TIMEOUT=15 mocha && nsp check",
+    "test": "PREQ_CONNECT_TIMEOUT=15 mocha",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint ."
   },
