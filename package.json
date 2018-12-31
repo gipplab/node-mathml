@@ -1,6 +1,6 @@
 {
   "name": "mathml",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MathML allows to load modify and render MathML input. It is based on the XML processing node module xtraverse.",
   "repository": {
     "url": "git+ssh://git@github.com/ag-gipp/node-mathml.git",
@@ -14,6 +14,16 @@
     "test": "PREQ_CONNECT_TIMEOUT=15 mocha",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint ."
+  },
+  "badges": {
+    "list": [
+      "travisci",
+      "npmversion",
+      "npmdownloads",
+      "daviddm",
+      "daviddmdev",
+      "coveralls"
+    ]
   },
   "main": "app/MathML/MathMLRenderer.js",
   "dependencies": {
@@ -47,5 +57,20 @@
     "mathml3"
   ],
   "author": "Moritz Schubotz",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "maintainers": [],
+  "contributors": [
+    "Vincent Stange (https://github.com/vstange)",
+    "Thiemo Kreuz (http://software.wikimedia.de)",
+    "Stefan Kaufhold (https://github.com/skaufhold)",
+    "Stanislav Malyshev (https://github.com/smalyshev)",
+    "Jonas Kress (https://github.com/JonasKress)",
+    "Felix Brix (https://github.com/fbrix)",
+    "Petulant Slacker (https://github.com/LuiSlacker)",
+    "greenkeeper[bot] (http://github.com/apps/greenkeeper)",
+    "Snyk bot (http://snyk.io)",
+    "Michael Kramer (https://github.com/Thanathan-k)",
+    "Norman Meuschke (www.meuschke.org)",
+    "Moritz Schubotz (www.formulasearchengine.com)"
+  ]
 }
