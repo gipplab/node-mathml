@@ -12,9 +12,14 @@ const xSemantics = xPath.parse('//m:semantics');
 
 // const log = require('winston/lib/winston.js');
 
-base.prototype.xref = function() {
-  return this.attr('xref');
-};
+Object.defineProperty(base.prototype,'xref',{
+  get() {
+    return this.attr('xref');
+  },
+  set(x) {
+    return this.attr('xref',x);
+  } }
+);
 
 base.prototype.getElementById = function(id) {
   return base.wrap(this[0].ownerDocument.getElementById(id));
@@ -45,7 +50,7 @@ base.prototype.contentRoot = function() {
 };
 
 base.prototype.refNode = function() {
-  const xref = this.xref();
+  const xref = this.xref;
   if (xref) {
     return base.wrap(this[0].ownerDocument.getElementById(xref));
   } else {
