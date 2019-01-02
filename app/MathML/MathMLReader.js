@@ -124,5 +124,21 @@ base.prototype.insertBefore = function(newChild) {
   return this;
 };
 
+base.prototype.prefixName = function(prefix) {
+  function rename(x) {
+    x = base.wrap(x);
+    if (x.id) {
+      x.id = prefix + x.id;
+    }
+    if (x.xref){
+      x.xref = prefix + x.xref;
+    }
+    x.children().forEach(rename);
+  }
+  // always prefix whole expression
+  rename(this.root());
+  return this;
+};
+
 module.exports = base.wrap;
 module.exports.base = base;

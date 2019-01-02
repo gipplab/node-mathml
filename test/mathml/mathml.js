@@ -118,5 +118,11 @@ describe('MathML editing', () => {
     const e42New = mathml.getElementById('e42New');
     assert.equal(e42New.id, "e42New");
   });
+  it('prefix one expression', () => {
+    const mathml = MathML(xmlString);
+    mathml.prefixName('A.');
+    const e42 = mathml.getElementById('A.e42');
+    assert.equal(e42.xref, "A.e3");
+  });
 });
 
