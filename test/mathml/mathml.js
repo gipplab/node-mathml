@@ -124,5 +124,11 @@ describe('MathML editing', () => {
     const e42 = mathml.getElementById('A.e42');
     assert.equal(e42.xref, "A.e3");
   });
+  it('change an xref', () =>{
+    const mathml = MathML(xmlString);
+    const e42 = mathml.getElementById('e42');
+    e42.xref = "newRef";
+    assert.equal(e42.xref, "newRef");
+  });
 });
 

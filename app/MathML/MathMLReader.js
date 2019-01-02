@@ -12,13 +12,14 @@ const xSemantics = xPath.parse('//m:semantics');
 
 // const log = require('winston/lib/winston.js');
 
-Object.defineProperty(base.prototype,'xref',{
-  get() {
-    return this.attr('xref');
-  },
-  set(x) {
-    return this.attr('xref',x);
-  } }
+Object.defineProperty(base.prototype, 'xref', {
+    get() {
+      return this.attr('xref');
+    },
+    set(x) {
+      return this.attr('xref', x);
+    }
+  }
 );
 
 base.prototype.getElementById = function(id) {
@@ -28,8 +29,8 @@ base.prototype.getElementById = function(id) {
 base.prototype.select1 = function(path) {
   return base.wrap(
     path.select1({
-      node:this[0],
-      namespaces:{
+      node: this[0],
+      namespaces: {
         m: MATHML_NS
       }
     }));
@@ -58,7 +59,7 @@ base.prototype.refNode = function() {
   }
 };
 
-base.prototype.estimateLocation = function(offset = { line:0,ch:0 }) {
+base.prototype.estimateLocation = function(offset = { line: 0, ch: 0 }) {
   function getLoc(n) {
     return {
       line: n.lineNumber + offset.line,
@@ -79,34 +80,38 @@ base.prototype.estimateLocation = function(offset = { line:0,ch:0 }) {
     }
   }
   const end = getLoc(next);
-  return { start,end };
+  return { start, end };
 };
 
 base.prototype._addCTreeElements = function(elements, exportNode, exportEdge) {
   function addNodeRecurse(n) {
-    exportNode(elements,n);
+    exportNode(elements, n);
     n.children().map((c) => {
-      const child = base.wrap(c);
-      exportEdge(elements,child,child.parent());
-      addNodeRecurse(child);
-    }
+        const child = base.wrap(c);
+        exportEdge(elements, child, child.parent());
+        addNodeRecurse(child);
+      }
     );
   }
+
   addNodeRecurse(this.contentRoot());
   return this;
 };
 // Ensure that id property is set
-Object.defineProperty(base.prototype,'id',{
-  get() {
-    return this.attr('id');
-  },
-  set(x) {
-    return this.attr('id',x);
-  } }
+Object.defineProperty(base.prototype, 'id', {
+    get() {
+      return this.attr('id');
+    },
+    set(x) {
+      return this.attr('id', x);
+    }
+  }
 );
 
 base.prototype.delete = function() {
-  if (!this.length) { return base.wrap([]); }
+  if (!this.length) {
+    return base.wrap([]);
+  }
   const n = this[0];
   n.parentNode.removeChild(n);
   return this;
@@ -130,11 +135,12 @@ base.prototype.prefixName = function(prefix) {
     if (x.id) {
       x.id = prefix + x.id;
     }
-    if (x.xref){
+    if (x.xref) {
       x.xref = prefix + x.xref;
     }
     x.children().forEach(rename);
   }
+
   // always prefix whole expression
   rename(this.root());
   return this;
