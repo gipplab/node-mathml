@@ -120,9 +120,13 @@ describe('MathML editing', () => {
   });
   it('prefix one expression', () => {
     const mathml = MathML(xmlString);
+    const e46 = mathml.getElementById('e46');
+    e46.id = null;
     mathml.prefixName('A.');
     const e42 = mathml.getElementById('A.e42');
+    const e43New = e42.next();
     assert.equal(e42.xref, "A.e3");
+    assert.equal(e43New.id,null);
   });
   it('change an xref', () =>{
     const mathml = MathML(xmlString);

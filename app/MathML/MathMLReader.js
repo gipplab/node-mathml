@@ -103,6 +103,9 @@ Object.defineProperty(base.prototype, 'id', {
       return this.attr('id');
     },
     set(x) {
+      if (x === null) {
+        this[0].removeAttribute('id');
+      }
       return this.attr('id', x);
     }
   }
