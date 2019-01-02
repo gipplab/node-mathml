@@ -149,5 +149,14 @@ base.prototype.prefixName = function(prefix) {
   return this;
 };
 
+base.prototype.cloneDoc = function() {
+  const ownerDocument = this.root()[0].ownerDocument;
+  const newDocument = ownerDocument.implementation.createDocument(
+    ownerDocument.namespaceURI, null, null);
+  const newNode = newDocument.importNode(ownerDocument.documentElement, true);
+  newDocument.appendChild(newNode);
+  return base.wrap(newDocument);
+};
+
 module.exports = base.wrap;
 module.exports.base = base;

@@ -134,5 +134,14 @@ describe('MathML editing', () => {
     e42.xref = "newRef";
     assert.equal(e42.xref, "newRef");
   });
+  it('clone a document', () =>{
+    const mathml = MathML(xmlString);
+    const mathml2 = mathml.cloneDoc();
+    const e42New = mathml2.getElementById('e42');
+    e42New.id = "e42New";
+    const e42Old = mathml.getElementById('e42');
+    assert.equal(e42New.id, "e42New");
+    assert.equal(e42Old.id, "e42");
+  });
 });
 
