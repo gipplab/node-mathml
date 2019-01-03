@@ -1,7 +1,11 @@
+/* eslint-disable no-param-reassign */
+
 'use strict';
 
 const mml = require('./MathMLReader');
 const opMap = require('./operationMap');
+const pako = require('pako');
+const base64url = require('base64url');
 
 const conf = require('../config.js');
 
@@ -10,7 +14,8 @@ mml.base.prototype.imgUrl = function(format = false) {
    * @return {string}
    */
   function toMML(mml) {
-    return `<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">${mml}</math>`;
+    mml =    `<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">${mml}</math>`;
+    return base64url(pako.deflate(mml));
   }
 
   let node = this.first();
@@ -27,7 +32,7 @@ mml.base.prototype.imgUrl = function(format = false) {
     node = node.refNode();
   }
   const mml = toMML(node.toString());
-  return `${conf.get('mathoidUrl')}/get/svg/mml/${encodeURIComponent(mml)}`;
+  return `${conf.get('mathoidUrl')}/zlib/svg/mml/${encodeURIComponent(mml)}`;
 };
 
 module.exports = mml;
