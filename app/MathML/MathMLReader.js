@@ -12,15 +12,22 @@ const xSemantics = xPath.parse('//m:semantics');
 
 // const log = require('winston/lib/winston.js');
 
-Object.defineProperty(base.prototype, 'xref', {
+function defineProperty(p) {
+  Object.defineProperty(base.prototype, p, {
     get() {
-      return this.attr('xref');
+      return this.attr(p);
     },
     set(x) {
-      return this.attr('xref', x);
+      if (x === null) {
+        this[0].removeAttribute(p);
+      }
+      return this.attr(p, x);
     }
-  }
-);
+  });
+}
+
+defineProperty('id');
+defineProperty('xref');
 
 base.prototype.getElementById = function(id) {
   return base.wrap(this[0].ownerDocument.getElementById(id));
@@ -87,29 +94,16 @@ base.prototype._addCTreeElements = function(elements, exportNode, exportEdge) {
   function addNodeRecurse(n) {
     exportNode(elements, n);
     n.children().map((c) => {
-        const child = base.wrap(c);
-        exportEdge(elements, child, child.parent());
-        addNodeRecurse(child);
-      }
+      const child = base.wrap(c);
+      exportEdge(elements, child, child.parent());
+      addNodeRecurse(child);
+    }
     );
   }
 
   addNodeRecurse(this.contentRoot());
   return this;
 };
-// Ensure that id property is set
-Object.defineProperty(base.prototype, 'id', {
-    get() {
-      return this.attr('id');
-    },
-    set(x) {
-      if (x === null) {
-        this[0].removeAttribute('id');
-      }
-      return this.attr('id', x);
-    }
-  }
-);
 
 base.prototype.delete = function() {
   if (!this.length) {
@@ -132,20 +126,55 @@ base.prototype.insertBefore = function(newChild) {
   return this;
 };
 
+function forall(func,node) {
+  function apply(n) {
+    const node = base.wrap(n);
+    func(node);
+    node.children().forEach(apply);
+  }
+  apply(node);
+}
+
 base.prototype.prefixName = function(prefix) {
   function rename(x) {
-    x = base.wrap(x);
     if (x.id) {
       x.id = prefix + x.id;
     }
     if (x.xref) {
       x.xref = prefix + x.xref;
     }
-    x.children().forEach(rename);
   }
 
-  // always prefix whole expression
-  rename(this.root());
+  forall(rename, this.root());
+  return this;
+};
+
+base.prototype.simplifyIds = function(prefix = 'p') {
+  const ids = {};
+  let counter = 0;
+
+  function renameIds(n) {
+    const newId = prefix + counter;
+    if (n.id) {
+      ids[n.id] = newId;
+    }
+    counter++;
+    n.id = newId;
+  }
+
+  function replaceReferences(n) {
+    if (n.xref) {
+      if (ids[n.xref]) {
+        n.xref = ids[n.xref];
+      } else {
+        n.xref = null;
+      }
+    }
+  }
+
+  forall(renameIds,this.root());
+  forall(replaceReferences,this.root());
+
   return this;
 };
 

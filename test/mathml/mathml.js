@@ -143,5 +143,30 @@ describe('MathML editing', () => {
     assert.equal(e42New.id, "e42New");
     assert.equal(e42Old.id, "e42");
   });
+  it('simplify ids', () => {
+    const mathml = MathML(xmlString);
+    const e42 = mathml.getElementById('e42');
+    const e42Text = e42.text();
+    mathml.simplifyIds('a');
+    const a42 = mathml.getElementById('a42');
+    assert.equal(a42.text(), e42Text);
+  });
+  it('simplify ids should delete undefined references', () => {
+    const mathml = MathML(xmlString);
+    const e42 = mathml.getElementById('e42');
+    e42.id = "notReferenced";
+    mathml.simplifyIds('a');
+    const a3 = mathml.getElementById('a3');
+    assert.equal(a3.xref, null);
+  });
+  it('simplify ids should insert missing ids', () => {
+    const mathml = MathML(xmlString);
+    const e42 = mathml.getElementById('e42');
+    e42.id = null;
+    const e42Text = e42.text();
+    mathml.simplifyIds('a');
+    const a42 = mathml.getElementById('a42');
+    assert.equal(a42.text(), e42Text);
+  });
 });
 
