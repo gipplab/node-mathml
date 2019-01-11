@@ -168,5 +168,11 @@ describe('MathML editing', () => {
     const a42 = mathml.getElementById('a42');
     assert.equal(a42.text(), e42Text);
   });
+  it('minimalize output should be idempotent', () => {
+    const mathml = MathML(xmlString);
+    const pass1 = mathml.toMinimalPmml();
+    const pass2 = pass1.toMinimalPmml();
+    assert.equal(pass1.toString(), pass2.toString());
+  });
 });
 

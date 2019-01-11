@@ -94,10 +94,10 @@ base.prototype._addCTreeElements = function(elements, exportNode, exportEdge) {
   function addNodeRecurse(n) {
     exportNode(elements, n);
     n.children().map((c) => {
-      const child = base.wrap(c);
-      exportEdge(elements, child, child.parent());
-      addNodeRecurse(child);
-    }
+        const child = base.wrap(c);
+        exportEdge(elements, child, child.parent());
+        addNodeRecurse(child);
+      }
     );
   }
 
@@ -126,12 +126,13 @@ base.prototype.insertBefore = function(newChild) {
   return this;
 };
 
-function forall(func,node) {
+function forall(func, node) {
   function apply(n) {
     const node = base.wrap(n);
     func(node);
     node.children().forEach(apply);
   }
+
   apply(node);
 }
 
@@ -172,19 +173,66 @@ base.prototype.simplifyIds = function(prefix = 'p') {
     }
   }
 
-  forall(renameIds,this.root());
-  forall(replaceReferences,this.root());
+  forall(renameIds, this.root());
+  forall(replaceReferences, this.root());
 
   return this;
 };
 
-base.prototype.cloneDoc = function() {
+base.prototype.clone = function(node = this[0]) {
   const ownerDocument = this.root()[0].ownerDocument;
   const newDocument = ownerDocument.implementation.createDocument(
     ownerDocument.namespaceURI, null, null);
-  const newNode = newDocument.importNode(ownerDocument.documentElement, true);
+  const newNode = newDocument.importNode(node, true);
   newDocument.appendChild(newNode);
   return base.wrap(newDocument);
+};
+
+base.prototype.cloneDoc = function() {
+  const ownerDocument = this.root()[0].ownerDocument;
+  return this.clone(ownerDocument.documentElement);
+};
+
+base.prototype.toMinimalPmml = function() {
+
+  function remove(n) {
+    if (n.name() === 'annotation') {
+      n.delete();
+    }
+    const ignorableAttributes = [
+      'alttext',
+      'id',
+      'xref'
+      // , 'stretchy'
+    ];
+    ignorableAttributes.forEach(a => n[0].removeAttribute(a));
+    // remove empty strings
+    for (let c = n[0].firstChild; c; c = c.nextSibling) {
+      if (c.nodeType === 3 && /\s/g.test(c.nodeValue)) {
+        c.parentNode.removeChild(c);
+      }
+    }
+  }
+
+  const other = this.clone();
+  try {
+    other.contentRoot().parent().delete();
+  } catch (e) {
+    // ignore
+  }
+
+  // remove superfluous semantics container
+  const semantics = other.children('semantics');
+  if (semantics.length) {
+    const content = semantics.children();
+    content.forEach((c) => {
+      other.first()[0].appendChild(c);
+    });
+    semantics.delete();
+  }
+  forall(remove, other);
+
+  return other;
 };
 
 module.exports = base.wrap;
