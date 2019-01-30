@@ -12,7 +12,12 @@ const xSemantics = xPath.parse('//m:semantics');
 
 // const log = require('winston/lib/winston.js');
 
-function defineProperty(p) {
+interface BaseType {
+  [propName: string]: any;
+}
+
+
+function defineProperty(p:string) {
   Object.defineProperty(base.prototype, p, {
     get() {
       return this.attr(p);
@@ -29,11 +34,11 @@ function defineProperty(p) {
 defineProperty('id');
 defineProperty('xref');
 
-base.prototype.getElementById = function(id) {
+base.prototype.getElementById = function(id:string) {
   return base.wrap(this[0].ownerDocument.getElementById(id));
 };
 
-base.prototype.select1 = function(path) {
+base.prototype.select1 = function(path:any) {
   return base.wrap(
     path.select1({
       node: this[0],
@@ -67,7 +72,7 @@ base.prototype.refNode = function() {
 };
 
 base.prototype.estimateLocation = function(offset = { line: 0, ch: 0 }) {
-  function getLoc(n) {
+  function getLoc(n:{lineNumber:number,columnNumber:number}) {
     return {
       line: n.lineNumber + offset.line,
       ch: n.columnNumber + offset.ch
@@ -90,10 +95,10 @@ base.prototype.estimateLocation = function(offset = { line: 0, ch: 0 }) {
   return { start, end };
 };
 
-base.prototype._addCTreeElements = function(elements, exportNode, exportEdge) {
-  function addNodeRecurse(n) {
+base.prototype._addCTreeElements = function(elements:any, exportNode:any, exportEdge:any) {
+  function addNodeRecurse(n:BaseType) {
     exportNode(elements, n);
-    n.children().map((c) => {
+    n.children().map((c:any) => {
         const child = base.wrap(c);
         exportEdge(elements, child, child.parent());
         addNodeRecurse(child);
@@ -114,20 +119,20 @@ base.prototype.delete = function() {
   return this;
 };
 
-base.prototype.appendChild = function(newChild) {
+base.prototype.appendChild = function(newChild:BaseType) {
   const n = this[0];
   n.appendChild(newChild[0]);
   return this;
 };
 
-base.prototype.insertBefore = function(newChild) {
+base.prototype.insertBefore = function(newChild:BaseType) {
   const n = this[0];
   n.parentNode.insertBefore(n, newChild[0]);
   return this;
 };
 
-function forall(func, node) {
-  function apply(n) {
+function forall(func:Function, node:BaseType) {
+  function apply(n:BaseType) {
     const node = base.wrap(n);
     func(node);
     node.children().forEach(apply);
@@ -136,8 +141,8 @@ function forall(func, node) {
   apply(node);
 }
 
-base.prototype.prefixName = function(prefix) {
-  function rename(x) {
+base.prototype.prefixName = function(prefix:String) {
+  function rename(x:BaseType) {
     if (x.id) {
       x.id = prefix + x.id;
     }
@@ -151,10 +156,10 @@ base.prototype.prefixName = function(prefix) {
 };
 
 base.prototype.simplifyIds = function(prefix = 'p') {
-  const ids = {};
+  const ids:any = {};
   let counter = 0;
 
-  function renameIds(n) {
+  function renameIds(n:BaseType) {
     const newId = prefix + counter;
     if (n.id) {
       ids[n.id] = newId;
@@ -163,7 +168,7 @@ base.prototype.simplifyIds = function(prefix = 'p') {
     n.id = newId;
   }
 
-  function replaceReferences(n) {
+  function replaceReferences(n:BaseType) {
     if (n.xref) {
       if (ids[n.xref]) {
         n.xref = ids[n.xref];
@@ -179,7 +184,10 @@ base.prototype.simplifyIds = function(prefix = 'p') {
   return this;
 };
 
-base.prototype.clone = function(node = this[0]) {
+base.prototype.clone = function(node?:any ) {
+  if(!node){
+    node = this[0];
+  }
   const ownerDocument = this.root()[0].ownerDocument;
   const newDocument = ownerDocument.implementation.createDocument(
     ownerDocument.namespaceURI, null, null);
@@ -195,7 +203,7 @@ base.prototype.cloneDoc = function() {
 
 base.prototype.toMinimalPmml = function() {
 
-  function remove(n) {
+  function remove(n:BaseType) {
     if (n.name() === 'annotation') {
       n.delete();
     }
@@ -225,7 +233,7 @@ base.prototype.toMinimalPmml = function() {
   const semantics = other.children('semantics');
   if (semantics.length) {
     const content = semantics.children();
-    content.forEach((c) => {
+    content.forEach((c:any) => {
       other.first()[0].appendChild(c);
     });
     semantics.delete();
