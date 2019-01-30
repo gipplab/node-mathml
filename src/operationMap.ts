@@ -1,6 +1,6 @@
 'use strict';
 
-function line(sign) {
+function line(sign:string):string {
   return `<mrow><mo>${sign}</mo></mrow>`;
 }
 

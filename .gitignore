@@ -27,3 +27,5 @@ public/
 
 .idea/
 coverage/
+/build
+package-lock.json

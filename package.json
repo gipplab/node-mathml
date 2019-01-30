@@ -10,10 +10,16 @@
     "node": ">=6"
   },
   "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc",
+    "clean": "rm -f app/MathML/operationMap.js",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
     "coverage": "istanbul cover _mocha -- -R spec",
-    "test": "PREQ_CONNECT_TIMEOUT=15 mocha",
+    "test": "npm run clean && npm run build && PREQ_CONNECT_TIMEOUT=15 mocha",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "lint": "eslint ."
+    "prepublishOnly" : "npm test && npm run lint",
+    "preversion" : "npm run lint"
   },
   "badges": {
     "list": [
@@ -33,6 +39,8 @@
     "xtraverse": "^0.1.0"
   },
   "devDependencies": {
+    "@types/node": "^10.12.19",
+    "@types/pako": "^1.0.0",
     "coveralls": "^3.0.2",
     "eslint": "^5.0.0",
     "eslint-config-node-services": "^2.0.2",
@@ -43,7 +51,11 @@
     "istanbul": "^0.4.5",
     "jquery": "^3.3.1",
     "mocha": "^5.1.0",
-    "mocha-eslint": "^5.0.0"
+    "mocha-eslint": "^5.0.0",
+    "prettier": "^1.16.2",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.2.4"
   },
   "bugs": {
     "url": "https://github.com/ag-gipp/node-mathml/issues"
