@@ -27,5 +27,5 @@ public/
 
 .idea/
 coverage/
-/build
+/app/MathML
 package-lock.json

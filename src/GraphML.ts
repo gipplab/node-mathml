@@ -1,6 +1,6 @@
 'use strict';
 
-const mml = require('./MathMLReader');
+const renderer = require('./MathMLReader');
 // language=XML
 const graphHeader =  `<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -9,16 +9,16 @@ const graphHeader =  `<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
   <key id="cRef" for="edge" attr.type="string"/>
 </graphml>`;
 
-mml.base.prototype.toGraphML = function() {
-  const g = mml(graphHeader).c('graph');
-  function addNode(g,n) {
+renderer.base.prototype.toGraphML = function() {
+  const g = renderer(graphHeader).c('graph');
+  function addNode(g:any,n:any) {
     g.c('node',{
       id: `g.${n.id}`
     }).c('data',{
       key:'cRef'
     }).text(n.id);
   }
-  function addEdge(g,child,parent) {
+  function addEdge(g:any,child:any,parent:any) {
     g.c('edge',{
       source: `g.${parent.id}`,
       target: `g.${child.id}`
@@ -27,8 +27,8 @@ mml.base.prototype.toGraphML = function() {
   this._addCTreeElements(g,addNode,addEdge);
   // Hack xtraverse does not correctly initialize all DOM features
   // might be related to https://github.com/jaredhanson/node-xtraverse/blob/master/lib/collection.js#L617
-  return mml(g.root().toString());
+  return renderer(g.root().toString());
 
 };
 
-module.exports = mml;
+module.exports = renderer;
