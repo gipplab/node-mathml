@@ -4,8 +4,7 @@
 
 const mml = require('./MathMLReader');
 const opMap = require('./operationMap');
-const pako = require('pako');
-const base64url = require('base64url');
+const zlib = require('zlib');
 
 const conf = require('../config.js');
 
@@ -15,7 +14,8 @@ mml.base.prototype.imgUrl = function(format:string|boolean = false) {
    */
   function toMML(mml:string) {
     mml =    `<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">${mml}</math>`;
-    return base64url(pako.deflate(mml));
+
+    return zlib.deflateSync(mml).toString("base64");
   }
 
   let node = this.first();
