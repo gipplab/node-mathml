@@ -18,8 +18,8 @@
     "coverage": "istanbul cover _mocha -- -R spec",
     "test": "npm run clean && npm run build && PREQ_CONNECT_TIMEOUT=15 mocha",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "prepublishOnly" : "npm test && npm run lint",
-    "preversion" : "npm run lint"
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint"
   },
   "badges": {
     "list": [
@@ -33,14 +33,11 @@
   },
   "main": "app/MathML/MathMLRenderer.js",
   "dependencies": {
-    "base64url": "^3.0.1",
-    "pako": "^1.0.7",
     "xpath": "0.0.27",
     "xtraverse": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^10.12.19",
-    "@types/pako": "^1.0.0",
     "coveralls": "^3.0.2",
     "eslint": "^5.0.0",
     "eslint-config-node-services": "^2.0.2",
