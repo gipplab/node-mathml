@@ -9,11 +9,11 @@ const base64url = require('base64url');
 
 const conf = require('../config.js');
 
-mml.base.prototype.imgUrl = function(format = false) {
+mml.base.prototype.imgUrl = function(format:string|boolean = false) {
   /**
    * @return {string}
    */
-  function toMML(mml) {
+  function toMML(mml:string) {
     mml =    `<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">${mml}</math>`;
     return base64url(pako.deflate(mml));
   }
