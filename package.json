@@ -37,7 +37,7 @@
     "xtraverse": "^0.1.0"
   },
   "devDependencies": {
-    "@types/node": "^10.12.19",
+    "@types/node": "^11.9.0",
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
     "jquery": "^3.3.1",
