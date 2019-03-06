@@ -29,3 +29,4 @@ public/
 coverage/
 /app/MathML
 package-lock.json
+.nyc_output/

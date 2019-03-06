@@ -1,6 +1,6 @@
 {
   "name": "mathml",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "MathML allows to load modify and render MathML input. It is based on the XML processing node module xtraverse.",
   "repository": {
     "url": "git+ssh://git@github.com/ag-gipp/node-mathml.git",
@@ -11,11 +11,12 @@
   },
   "scripts": {
     "prepare": "npm run build",
+    "postinstall": "npm run build",
     "build": "tsc",
     "clean": "rm -f app/MathML/*.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
-    "coverage": "istanbul cover _mocha -- -R spec",
+    "coverage": "nyc --reporter=lcov node_modules/.bin/_mocha",
     "test": "npm run clean && npm run build && PREQ_CONNECT_TIMEOUT=15 mocha",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "prepublishOnly": "npm test && npm run lint",
@@ -38,15 +39,15 @@
   },
   "devDependencies": {
     "@types/node": "^11.9.0",
-    "coveralls": "^3.0.2",
-    "istanbul": "^0.4.5",
+    "coveralls": "^3.0.3",
     "jquery": "^3.3.1",
     "mocha": "^6.0.0",
     "mocha-eslint": "^5.0.0",
-    "prettier": "^1.16.2",
-    "tslint": "^5.12.1",
-    "tslint-config-prettier": "^1.17.0",
-    "typescript": "^3.2.4"
+    "nyc": "^13.3.0",
+    "prettier": "^1.16.4",
+    "tslint": "^5.13.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.3.3333"
   },
   "bugs": {
     "url": "https://github.com/ag-gipp/node-mathml/issues"
