@@ -50,7 +50,7 @@ base.prototype.select1 = function(path: any) {
 
 base.prototype.fixNamespace = function() {
   const doc = this.root();
-  if (doc.namespaceURI !== MATHML_NS) {
+  if (doc[0].namespaceURI !== MATHML_NS) {
     doc.attr('xmlns', MATHML_NS);
     return base.wrap(doc.toString());
   } else {

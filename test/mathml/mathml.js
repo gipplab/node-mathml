@@ -161,6 +161,14 @@ describe('MathML editing', () => {
     const a42 = mathml.getElementById('a42');
     assert.equal(a42.text(), e42Text);
   });
+  it('simplify ids should generate ids beginning with p by default', () => {
+    const mathml = MathML(xmlString);
+    const e42 = mathml.getElementById('e42');
+    const e42Text = e42.text();
+    mathml.simplifyIds();
+    const a42 = mathml.getElementById('p42');
+    assert.equal(a42.text(), e42Text);
+  });
   it('simplify ids should delete undefined references', () => {
     const mathml = MathML(xmlString);
     const e42 = mathml.getElementById('e42');
@@ -183,6 +191,11 @@ describe('MathML editing', () => {
     const pass1 = mathml.toMinimalPmml();
     const pass2 = pass1.toMinimalPmml();
     assert.equal(pass1.toString(), pass2.toString());
+  });
+  it('fixNamespace should be idempotent string', () => {
+    const mathml = MathML(xmlXString).fixNamespace();
+    const mathml2 = mathml.fixNamespace();
+    assert.strictEqual(mathml.toString(),mathml2.toString());
   });
   it('minimalize arxiv string', () => {
     const mathml = MathML(xmlXString).fixNamespace();
