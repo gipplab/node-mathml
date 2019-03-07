@@ -184,5 +184,10 @@ describe('MathML editing', () => {
     const pass2 = pass1.toMinimalPmml();
     assert.equal(pass1.toString(), pass2.toString());
   });
+  it('minimalize arxiv string', () => {
+    const mathml = MathML(xmlXString).fixNamespace();
+    const minimal = mathml.toMinimalPmml(['id','xref','alttext','display','class','kmcs-r']);
+    assert.strictEqual(minimal.toString().length, 66);
+  });
 });
 

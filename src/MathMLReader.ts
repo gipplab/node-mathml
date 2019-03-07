@@ -2,7 +2,6 @@
 
 
 const base = require('xtraverse/lib/collection.js');
-const domParser = require('xmldom').DOMParser;
 const xPath = require('xpath');
 
 const MATHML_NS = 'http://www.w3.org/1998/Math/MathML';
@@ -212,18 +211,17 @@ base.prototype.cloneDoc = function() {
   return this.clone(ownerDocument.documentElement);
 };
 
-base.prototype.toMinimalPmml = function() {
+base.prototype.toMinimalPmml = function(ignorableAttributes = [
+  'alttext',
+  'id',
+  'xref',
+  // , 'stretchy'
+]) {
 
   function remove(n: BaseType) {
     if (n.name() === 'annotation') {
       n.delete();
     }
-    const ignorableAttributes = [
-      'alttext',
-      'id',
-      'xref',
-      // , 'stretchy'
-    ];
     ignorableAttributes.forEach(a => n[0].removeAttribute(a));
     // remove empty strings
     for (let c = n[0].firstChild; c; c = c.nextSibling) {
