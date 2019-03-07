@@ -2,6 +2,7 @@
 
 
 const base = require('xtraverse/lib/collection.js');
+const domParser = require('xmldom').DOMParser;
 const xPath = require('xpath');
 
 const MATHML_NS = 'http://www.w3.org/1998/Math/MathML';
@@ -17,7 +18,7 @@ interface BaseType {
 }
 
 
-function defineProperty(p:string) {
+function defineProperty(p: string) {
   Object.defineProperty(base.prototype, p, {
     get() {
       return this.attr(p);
@@ -27,25 +28,35 @@ function defineProperty(p:string) {
         this[0].removeAttribute(p);
       }
       return this.attr(p, x);
-    }
+    },
   });
 }
 
 defineProperty('id');
 defineProperty('xref');
 
-base.prototype.getElementById = function(id:string) {
+base.prototype.getElementById = function(id: string) {
   return base.wrap(this[0].ownerDocument.getElementById(id));
 };
 
-base.prototype.select1 = function(path:any) {
+base.prototype.select1 = function(path: any) {
   return base.wrap(
     path.select1({
       node: this[0],
       namespaces: {
-        m: MATHML_NS
-      }
+        m: MATHML_NS,
+      },
     }));
+};
+
+base.prototype.fixNamespace = function() {
+  const doc = this.root();
+  if (doc.namespaceURI !== MATHML_NS) {
+    doc.attr('xmlns', MATHML_NS);
+    return base.wrap(doc.toString());
+  } else {
+    return this;
+  }
 };
 
 base.prototype.contentRoot = function() {
@@ -72,10 +83,10 @@ base.prototype.refNode = function() {
 };
 
 base.prototype.estimateLocation = function(offset = { line: 0, ch: 0 }) {
-  function getLoc(n:{lineNumber:number,columnNumber:number}) {
+  function getLoc(n: { lineNumber: number, columnNumber: number }) {
     return {
       line: n.lineNumber + offset.line,
-      ch: n.columnNumber + offset.ch
+      ch: n.columnNumber + offset.ch,
     };
   }
 
@@ -95,14 +106,14 @@ base.prototype.estimateLocation = function(offset = { line: 0, ch: 0 }) {
   return { start, end };
 };
 
-base.prototype._addCTreeElements = function(elements:any, exportNode:any, exportEdge:any) {
-  function addNodeRecurse(n:BaseType) {
+base.prototype._addCTreeElements = function(elements: any, exportNode: any, exportEdge: any) {
+  function addNodeRecurse(n: BaseType) {
     exportNode(elements, n);
-    n.children().map((c:any) => {
+    n.children().map((c: any) => {
         const child = base.wrap(c);
         exportEdge(elements, child, child.parent());
         addNodeRecurse(child);
-      }
+      },
     );
   }
 
@@ -119,20 +130,20 @@ base.prototype.delete = function() {
   return this;
 };
 
-base.prototype.appendChild = function(newChild:BaseType) {
+base.prototype.appendChild = function(newChild: BaseType) {
   const n = this[0];
   n.appendChild(newChild[0]);
   return this;
 };
 
-base.prototype.insertBefore = function(newChild:BaseType) {
+base.prototype.insertBefore = function(newChild: BaseType) {
   const n = this[0];
   n.parentNode.insertBefore(n, newChild[0]);
   return this;
 };
 
-function forall(func:Function, node:BaseType) {
-  function apply(n:BaseType) {
+function forall(func: Function, node: BaseType) {
+  function apply(n: BaseType) {
     const node = base.wrap(n);
     func(node);
     node.children().forEach(apply);
@@ -141,8 +152,8 @@ function forall(func:Function, node:BaseType) {
   apply(node);
 }
 
-base.prototype.prefixName = function(prefix:String) {
-  function rename(x:BaseType) {
+base.prototype.prefixName = function(prefix: String) {
+  function rename(x: BaseType) {
     if (x.id) {
       x.id = prefix + x.id;
     }
@@ -156,10 +167,10 @@ base.prototype.prefixName = function(prefix:String) {
 };
 
 base.prototype.simplifyIds = function(prefix = 'p') {
-  const ids:any = {};
+  const ids: any = {};
   let counter = 0;
 
-  function renameIds(n:BaseType) {
+  function renameIds(n: BaseType) {
     const newId = prefix + counter;
     if (n.id) {
       ids[n.id] = newId;
@@ -168,7 +179,7 @@ base.prototype.simplifyIds = function(prefix = 'p') {
     n.id = newId;
   }
 
-  function replaceReferences(n:BaseType) {
+  function replaceReferences(n: BaseType) {
     if (n.xref) {
       if (ids[n.xref]) {
         n.xref = ids[n.xref];
@@ -184,8 +195,8 @@ base.prototype.simplifyIds = function(prefix = 'p') {
   return this;
 };
 
-base.prototype.clone = function(node?:any ) {
-  if(!node){
+base.prototype.clone = function(node?: any) {
+  if (!node) {
     node = this[0];
   }
   const ownerDocument = this.root()[0].ownerDocument;
@@ -203,14 +214,14 @@ base.prototype.cloneDoc = function() {
 
 base.prototype.toMinimalPmml = function() {
 
-  function remove(n:BaseType) {
+  function remove(n: BaseType) {
     if (n.name() === 'annotation') {
       n.delete();
     }
     const ignorableAttributes = [
       'alttext',
       'id',
-      'xref'
+      'xref',
       // , 'stretchy'
     ];
     ignorableAttributes.forEach(a => n[0].removeAttribute(a));
@@ -233,7 +244,7 @@ base.prototype.toMinimalPmml = function() {
   const semantics = other.children('semantics');
   if (semantics.length) {
     const content = semantics.children();
-    content.forEach((c:any) => {
+    content.forEach((c: any) => {
       other.first()[0].appendChild(c);
     });
     semantics.delete();

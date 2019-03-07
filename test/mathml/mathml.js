@@ -9,6 +9,8 @@ const file = path.join(__dirname, '..', 'data', '09-goat.mml.xml');
 const xmlString = fs.readFileSync(file, 'utf8');
 const pFile = path.join(__dirname, '..', 'data', '10-pmml-annotation.mml.xml');
 const xmlPString = fs.readFileSync(pFile, 'utf8');
+const xFile = path.join(__dirname, '..', 'data', '11-arxiv-ginev-18.mml.xml');
+const xmlXString = fs.readFileSync(xFile, 'utf8');
 
 describe('MathML reading', () => {
 
@@ -19,6 +21,14 @@ describe('MathML reading', () => {
     assert(contentRoot);
     assert.equal(contentRoot.name(), 'apply');
     assert.equal(contentRoot.id, 'e40');
+  });
+  it('should get arxiv content', () => {
+    let mathml = MathML(xmlXString);
+    mathml = mathml.fixNamespace();
+    const contentRoot = mathml.contentRoot();
+    assert(contentRoot);
+    assert.equal(contentRoot.name(), 'cn');
+    assert.equal(contentRoot.id, 'S1.p3.1.m4.1.1.cmml');
   });
   it('xref should point to coresponding elements', () => {
     const mathml = MathML(xmlString);
