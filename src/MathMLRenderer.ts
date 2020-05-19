@@ -2,10 +2,10 @@
 
 'use strict';
 
+import zlib from 'zlib';
+
 const reader = require('./MathMLReader');
 const opMap = require('./operationMap');
-const zlib = require('zlib');
-
 const conf = require('../config.js');
 
 reader.base.prototype.imgUrl = function(format: string | boolean = false) {

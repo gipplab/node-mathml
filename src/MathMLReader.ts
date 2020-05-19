@@ -141,7 +141,7 @@ base.prototype.insertBefore = function(newChild: BaseType) {
   return this;
 };
 
-function forall(func: Function, node: BaseType) {
+function forall(func: (x) => any, node: BaseType) {
   function apply(n: BaseType) {
     const node = base.wrap(n);
     func(node);
@@ -151,7 +151,7 @@ function forall(func: Function, node: BaseType) {
   apply(node);
 }
 
-base.prototype.prefixName = function(prefix: String) {
+base.prototype.prefixName = function(prefix: string) {
   function rename(x: BaseType) {
     if (x.id) {
       x.id = prefix + x.id;
