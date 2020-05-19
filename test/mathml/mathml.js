@@ -207,5 +207,10 @@ describe('MathML editing', () => {
     const minimal = mathml.toMinimalPmml('all');
     assert.strictEqual(minimal.toString().length, 66);
   });
+  it('minimalize with invialud config', () => {
+    const mathml = MathML(xmlXString).fixNamespace();
+    const minimal = mathml.toMinimalPmml('invalid');
+    assert.strictEqual(minimal.toString().length, 198);
+  });
 });
 

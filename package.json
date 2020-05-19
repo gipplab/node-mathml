@@ -15,7 +15,7 @@
     "clean": "rm -f app/MathML/*.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
-    "coverage": "nyc --reporter=lcov node_modules/.bin/_mocha",
+    "coverage": "nyc npm run test",
     "test": "npm run clean && npm run build && PREQ_CONNECT_TIMEOUT=15 mocha",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "prepublishOnly": "npm test && npm run lint",
