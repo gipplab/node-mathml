@@ -1,6 +1,6 @@
 {
   "name": "mathml",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "MathML allows to load modify and render MathML input. It is based on the XML processing node module xtraverse.",
   "repository": {
     "url": "git+ssh://git@github.com/ag-gipp/node-mathml.git",
@@ -37,16 +37,16 @@
     "xtraverse": "^0.1.0"
   },
   "devDependencies": {
-    "@types/node": "^13.1.0",
-    "coveralls": "^3.0.4",
-    "jquery": "^3.4.1",
-    "mocha": "^6.1.4",
+    "@types/node": "^14.0.1",
+    "coveralls": "^3.1.0",
+    "jquery": "^3.5.1",
+    "mocha": "^7.1.2",
     "mocha-eslint": "^6.0.0",
-    "nyc": "^14.1.1",
-    "prettier": "^2.0.0",
-    "tslint": "^5.18.0",
+    "nyc": "^15.0.1",
+    "prettier": "^2.0.5",
+    "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.9.2"
   },
   "bugs": {
     "url": "https://github.com/ag-gipp/node-mathml/issues"
