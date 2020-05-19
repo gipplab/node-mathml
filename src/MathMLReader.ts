@@ -211,7 +211,7 @@ base.prototype.cloneDoc = function() {
   return this.clone(ownerDocument.documentElement);
 };
 
-base.prototype.toMinimalPmml = function(ignorableAttributes = [
+base.prototype.toMinimalPmml = function(ignorableAttributes:(string[]|string) = [
   'alttext',
   'id',
   'xref',
@@ -222,7 +222,15 @@ base.prototype.toMinimalPmml = function(ignorableAttributes = [
     if (n.name() === 'annotation') {
       n.delete();
     }
-    ignorableAttributes.forEach(a => n[0].removeAttribute(a));
+    if (ignorableAttributes instanceof Array) {
+      ignorableAttributes.forEach(a => n[0].removeAttribute(a));
+    } else if (ignorableAttributes === 'all' && n[0].hasAttributes) {
+      const attribs = n[0].attributes;
+      const len = attribs.length;
+      for (let i = 0; i < len; i++) {
+        n[0].removeAttribute(attribs.item(0).nodeName);
+      }
+    }
     // remove empty strings
     for (let c = n[0].firstChild; c; c = c.nextSibling) {
       if (c.nodeType === 3 && /\s/g.test(c.nodeValue)) {

@@ -202,5 +202,10 @@ describe('MathML editing', () => {
     const minimal = mathml.toMinimalPmml(['id','xref','alttext','display','class','kmcs-r']);
     assert.strictEqual(minimal.toString().length, 66);
   });
+  it('minimalize all attributes string', () => {
+    const mathml = MathML(xmlXString).fixNamespace();
+    const minimal = mathml.toMinimalPmml('all');
+    assert.strictEqual(minimal.toString().length, 66);
+  });
 });
 
