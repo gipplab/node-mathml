@@ -14,6 +14,8 @@ const xSemantics = xPath.parse('//m:semantics');
 
 interface BaseType {
   [propName: string]: any;
+  id:string;
+  xref:string|null;
 }
 
 
@@ -105,6 +107,7 @@ base.prototype.estimateLocation = function(offset = { line: 0, ch: 0 }) {
   return { start, end };
 };
 
+// eslint-disable-next-line no-underscore-dangle
 base.prototype._addCTreeElements = function(elements: any, exportNode: any, exportEdge: any) {
   function addNodeRecurse(n: BaseType) {
     exportNode(elements, n);
@@ -170,7 +173,7 @@ base.prototype.simplifyIds = function(prefix = 'p') {
   let counter = 0;
 
   function renameIds(n: BaseType) {
-    const newId = prefix + counter;
+    const newId = prefix + counter.toString();
     if (n.id) {
       ids[n.id] = newId;
     }
