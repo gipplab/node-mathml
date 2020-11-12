@@ -4,4 +4,5 @@ node_js:
 - '10'
 - 'node'
 - 'lts/*'
+- '14'
 script:  npm run-script coverage && (npm run-script coveralls || exit 0)

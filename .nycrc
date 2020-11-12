@@ -11,6 +11,7 @@
   "exclude": [
     "coverage/**",
     "node_modules/**",
+    ".eslintrc.js",
     "**/*.d.ts",
     "**/*.test.ts"
   ],
