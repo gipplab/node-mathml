@@ -33,7 +33,7 @@
   },
   "main": "app/MathML/MathMLRenderer.js",
   "dependencies": {
-    "xpath": "0.0.32",
+    "xpath": "0.0.33",
     "xtraverse": "^0.1.0"
   },
   "devDependencies": {
